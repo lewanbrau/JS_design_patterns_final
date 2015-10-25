@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Neighborhood Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <script src="js/knockout-3.3.0.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
+    <script type="text/javascript" src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script>
+    <script src="js/yelpapi.js"></script>
+
+    <style type="text/css">
+		html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
+      	#map { height: 100%; }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <input style="width: 100%;" placeholder="Search…" type="search" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
+        </div>
+    </div>
+	<div class="row">
+        <div class="col-md-6">
+            <h1 data-bind="text: neighborhood"></h1>
+            <h2 data-bind="text: locationCount"></h2>
+    		<ul data-bind="foreach: locations">
+                <li>
+                    <strong data-bind="text: name, click: $parent.setLoc"></strong> -
+                    <a href data-bind="text: url"></a>
+                </li></ul>
+        </div>
+        <div class="col-md-6">
+            <h1 data-bind="text: currentSelection"></h1>
+            <img src="" data-bind="attr: {src: ratingPic}">
+            <h4 data-bind="text: reviews">Reviews:</h4>
+            <p data-bind="text: review"></p>
+
+        </div>
+    </div>
+<div id="map"></div>
+
+<script src="js/map.js"></script>
+<script src="js/app.js"></script>
+
+
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqtc0dV2TibHm2eBCHdo9uH77tbwTa5iA&callback=initMap">
+    </script>
+
+
+</body>
+</html>
