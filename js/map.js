@@ -30,7 +30,7 @@ function addMarker(location) {
     position: location.loc,
     title: location.name,
     map: map,
-  })
+  });
 
   marker.addListener('click', function(){
     viewModel.setCurrent(marker.title);
@@ -99,7 +99,7 @@ function bounceSelected(name){
 
 var contentString = '<div id="content">'+
     '<div id="siteNotice">'+
-    '<p data-bind="text: review"></p>'
+    '<p data-bind="text: review"></p>'+
     '</div>';
 
 

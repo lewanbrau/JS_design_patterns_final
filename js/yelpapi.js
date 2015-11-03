@@ -50,6 +50,9 @@ var getID = function(name){
           // console.log(data.businesses[0].id);
           getReviews(data.businesses[0].id);
           //$("body").append(output);
+      },
+      'error': function () {
+        alert('API data pull error. Try again.')
       }
   });
 
@@ -87,8 +90,11 @@ var getReviews = function(id){
           viewModel.yelpURL(data.url);
           // return data;
           //$("body").append(output);
+      },
+      'error': function () {
+        alert('API data pull error. Try again.')
       }
   });
 
-}
+};
 

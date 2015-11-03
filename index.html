@@ -12,11 +12,26 @@
     <script src="js/yelpapi.js"></script>
 
     <style type="text/css">
-		html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
+        body {
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        html {
+            width: 100%;
+            height: 100%;
+            clip: auto;
+            position: absolute;
+            overflow: hidden;
+        }
       	#map { height: 100%; }
+        /*hide yelp div on small screens*/
+        @media only screen and (max-width: 991px) {
+            #yelp { display: none; }
+}
     </style>
 </head>
 <body>
+ <div style="height:100%">
     <div class="row">
         <div class="col-md-12">
             <input style="width: 100%;" placeholder="Search…" type="search" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
@@ -32,7 +47,7 @@
                     <a href data-bind="text: url"></a>
                 </li></ul>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" id="yelp">
             <h1 data-bind="text: currentSelection"></h1>
             <img src="" data-bind="attr: {src: ratingPic}">
             <h4 data-bind="text: reviews">Reviews:</h4>
@@ -40,15 +55,25 @@
 
         </div>
     </div>
-<div id="map"></div>
+    <div id="map"></div>
+</div>
+
+<!-- set the size of the map to the full height -->
+<script>
+    $(window).resize(function () {
+        var h = $(window).height(),
+            offsetTop = 0; // Calculate the top offset
+
+        $('#map').css('height', (h - offsetTop));
+    }).resize();
+</script>
 
 <script src="js/map.js"></script>
 <script src="js/app.js"></script>
 
 
 
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqtc0dV2TibHm2eBCHdo9uH77tbwTa5iA&callback=initMap">
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqtc0dV2TibHm2eBCHdo9uH77tbwTa5iA&callback=initMap">
     </script>
 
 

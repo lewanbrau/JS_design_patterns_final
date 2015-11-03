@@ -4,7 +4,7 @@ var neighborhood = {
     name: "Mission Bay",
     loc: {lat: 37.774239, lng: -122.391085},
     locations: 0
-}
+};
 
 var locationsModel = [
   {
@@ -42,7 +42,7 @@ var locationsModel = [
     display: 'True',
     yelpID: ''
   },
-]
+];
 
 //View Model
 var viewModel = {
@@ -69,7 +69,7 @@ var viewModel = {
 
   initialValues: function() {
     for(var loc in locationsModel){
-      this.locations.push(locationsModel[loc])
+      this.locations.push(locationsModel[loc]);
     }
     this.locCount();
     getID(locationsModel[0].name);
@@ -85,13 +85,13 @@ var viewModel = {
   },
 
   locCount: function(){
-    var n = viewModel.locations().length
+    var n = viewModel.locations().length;
     if(n === 1) {
-      this.locationCount(n.toString() + ' location')
+      this.locationCount(n.toString() + ' location');
       getID(viewModel.locations()[0].name);
       this.currentSelection(viewModel.locations()[0].name);
     } else {
-      this.locationCount(n.toString() + ' locations')
+      this.locationCount(n.toString() + ' locations');
     }
   },
 
