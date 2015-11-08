@@ -20,7 +20,7 @@ var accessor = {
 };
 
 
-var getID = function(name){
+var getID = function(name, loc){
     parameters = [];
     parameters.push(['term', name]);
     parameters.push(['location', 'San+Francisco']);
@@ -45,10 +45,11 @@ var getID = function(name){
       'url' : message.action,
       'data' : parameterMap,
       'dataType' : 'jsonp',
-      'jsonpCallback' : 'cb',
+      // 'jsonpCallback' : 'cb',
       'success' : function(data, textStats, XMLHttpRequest) {
           // console.log(data.businesses[0].id);
-          getReviews(data.businesses[0].id);
+          locationsModel[loc].yelpID = data.businesses[0].id;
+          getReview(data.businesses[0].id, loc);
           //$("body").append(output);
       },
       'error': function () {
@@ -58,7 +59,7 @@ var getID = function(name){
 
 };
 
-var getReviews = function(id){
+var getReview = function(id, loc){
     parameters = [];
     parameters.push(['callback', 'cb']);
     parameters.push(['oauth_consumer_key', auth.consumerKey]);
@@ -82,12 +83,19 @@ var getReviews = function(id){
       'url' : message.action,
       'data' : parameterMap,
       'dataType' : 'jsonp',
-      'jsonpCallback' : 'cb',
+      // 'jsonpCallback' : 'cb',
       'success' : function(data, textStats, XMLHttpRequest) {
-          viewModel.ratingPic(data.rating_img_url);
-          viewModel.reviews(data.review_count + " reviews");
-          viewModel.review(data.snippet_text);
-          viewModel.yelpURL(data.url);
+          
+
+        locationsModel[loc].ratingPic = data.rating_img_url;
+        locationsModel[loc].reviews = data.review_count + " reviews";
+        locationsModel[loc].review = data.snippet_text;
+        locationsModel[loc].yelpURL = data.url;
+
+          // viewModel.ratingPic(data.rating_img_url);
+          // viewModel.reviews(data.review_count + " reviews");
+          // viewModel.review(data.snippet_text);
+          // viewModel.yelpURL(data.url);
           // return data;
           //$("body").append(output);
       },

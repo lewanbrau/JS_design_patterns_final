@@ -13,17 +13,16 @@
 
     <style type="text/css">
         body {
-            overflow-y: scroll;
-            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
         html {
             width: 100%;
             height: 100%;
             clip: auto;
             position: absolute;
-            overflow: hidden;
         }
-      	#map { height: 100%; }
+      	/*#map { height: 100%; }*/
         /*hide yelp div on small screens*/
         @media only screen and (max-width: 991px) {
             #yelp { display: none; }
@@ -31,38 +30,44 @@
     </style>
 </head>
 <body>
- <div style="height:100%">
-    <div class="row">
-        <div class="col-md-12">
-            <input style="width: 100%;" placeholder="Search…" type="search" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
-        </div>
-    </div>
-	<div class="row">
-        <div class="col-md-6">
-            <h1 data-bind="text: neighborhood"></h1>
-            <h2 data-bind="text: locationCount"></h2>
-    		<ul data-bind="foreach: locations">
-                <li>
-                    <strong data-bind="text: name, click: $parent.setLoc"></strong> -
-                    <a href data-bind="text: url"></a>
-                </li></ul>
-        </div>
-        <div class="col-md-6" id="yelp">
-            <h1 data-bind="text: currentSelection"></h1>
-            <img src="" data-bind="attr: {src: ratingPic}">
-            <h4 data-bind="text: reviews">Reviews:</h4>
-            <p data-bind="text: review"></p>
+    <div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;">
+        <div style="height: 250px; position: absolute; top: 0; left: 0; right: 0;">
+            <div class="row">
+                <div class="col-md-12">
+                    <input style="width: 100%;" placeholder="Search…" type="search" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
+                </div>
+            </div>
+        	<div class="row">
+                <div class="col-md-6">
+                    <h1 data-bind="text: neighborhood"></h1>
+                    <h2 data-bind="text: locationCount"></h2>
+            		<ul data-bind="foreach: locations">
+                        <li>
+                            <strong data-bind="text: name, click: $parent.setLoc"></strong> -
+                            <a href data-bind="text: url"></a>
+                        </li></ul>
+                </div>
+                <div class="col-md-6" id="yelp" data-bind="foreach:currentSelection">
+                    <h1 data-bind="text: name"></h1>
+                    <img src="" data-bind="attr: {src: ratingPic}">
+                    <h4 data-bind="text: reviews"></h4>
+                    <p data-bind="text: review"></p>
 
+                </div>
+            </div>
+        </div>
+       <!--  <div style="border:1px solid red; height: 50%;">test</div> -->
+        <div id="gmap" style="position: absolute; top: 250px; left: 0; right: 0;">
+            <div id="map"></div>
         </div>
     </div>
-    <div id="map"></div>
-</div>
+
 
 <!-- set the size of the map to the full height -->
 <script>
     $(window).resize(function () {
         var h = $(window).height(),
-            offsetTop = 0; // Calculate the top offset
+            offsetTop = 250; // Calculate the top offset
 
         $('#map').css('height', (h - offsetTop));
     }).resize();

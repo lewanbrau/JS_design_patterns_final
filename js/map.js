@@ -1,43 +1,45 @@
 var map;
 var markers = [];
 var infoWindow;
-var infoContent = "<div id='inside'><h2 data-bind='text: currentSelection'>test</h2><img src='' data-bind='attr: {src: ratingPic}'><h4 data-bind='text: reviews'>Reviews:</h4><p data-bind='text: review'></p></div>";
+
 function initMap() {
 
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 15,
     center: neighborhood.loc,
     scrollwheel: false,
+    mapTypeControl: false,
+    zoomControl: true,
   });
   viewModel.generateMarkers();
 
   if (!infoWindow) {
     infoWindow = new google.maps.InfoWindow({
-      content: infoContent
+      content: $('#yelp').html()
     });
 
-    google.maps.event.addListener(infoWindow, 'domready', function() {
-      ko.applyBindings(viewModel, document.getElementById("inside"));
-    });
+    // google.maps.event.addListener(infoWindow, 'domready', function() {
+    //   ko.applyBindings(viewModel, document.getElementById("inside"));
+    // });
   } 
 }
 
 // Adds a marker to the map and push to the array.
 function addMarker(location) {
-
-  var infoWindowIsBound = false;
+  var infoWindowIsBound = true;
   var marker = new google.maps.Marker({
     position: location.loc,
     title: location.name,
     map: map,
   });
 
+  // creates markers and adds a listener to do actions
   marker.addListener('click', function(){
-    viewModel.setCurrent(marker.title);
+    viewModel.setCurrent(location);
     toggleBounce(marker);
+    infoWindow.setContent($('#yelp').html());
     infoWindow.open(map, marker);
   });
-  // marker.addListener('click', toggleBounce);
   markers.push(marker);
 }
 
@@ -80,6 +82,8 @@ function toggleBounce(marker) {
   }
 }
 
+// if there is just one location left in the observable locations array
+// bounce that one and open the info window
 function bounceSingle(){
   turnOffBounce();
   if (markers.length === 1){
@@ -88,18 +92,15 @@ function bounceSingle(){
   }
 }
 
-function bounceSelected(name){
+// open the info window and bounce a clicked on marker
+function bounceSelected(data){
   for (var i = 0; i < markers.length; i++){
-    if (markers[i].title === name) {
+    if (markers[i].title === data.name) {
       toggleBounce(markers[i]);
+      infoWindow.setContent($('#yelp').html());
       infoWindow.open(map, markers[i]);
     }
   }
 }
-
-var contentString = '<div id="content">'+
-    '<div id="siteNotice">'+
-    '<p data-bind="text: review"></p>'+
-    '</div>';
 
 

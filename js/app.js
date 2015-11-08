@@ -2,7 +2,7 @@
 
 var neighborhood = {
     name: "Mission Bay",
-    loc: {lat: 37.774239, lng: -122.391085},
+    loc: {lat: 37.776889, lng: -122.390667},
     locations: 0
 };
 
@@ -12,35 +12,55 @@ var locationsModel = [
     name: 'AT&T Park',
     url: 'http://sanfrancisco.giants.mlb.com/sf/ballpark/',
     display: 'True',
-    yelpID: ''
+    yelpID: '',
+    ratingPic: '',
+    reviews: '',
+    review: '',
+    yelpURL: ''
   },
   {
     loc: {lat: 37.775481, lng: -122.393403},
     name: "Philz Coffee",
     url: 'philzcoffee.com',
     display: 'True',
-    yelpID: ''
+    yelpID: '',
+    ratingPic: '',
+    reviews: '',
+    review: '',
+    yelpURL: ''
   },
   {
     loc: {lat: 37.776244, lng: -122.389648},
     name: 'The Yard at Mission Rock',
     url: 'theyardsf.com',
     display: 'True',
-    yelpID: ''
+    yelpID: '',
+    ratingPic: '',
+    reviews: '',
+    review: '',
+    yelpURL: ''
   },
   {
     loc: {lat: 37.778348, lng: -122.392610},
     name: 'Lucky Strike San Francisco',
     url: 'bowlluckystrike.com',
     display: 'True',
-    yelpID: ''
+    yelpID: '',
+    ratingPic: '',
+    reviews: '',
+    review: '',
+    yelpURL: ''
   },
   {
     loc: {lat: 37.777019, lng: -122.392583},
     name: 'Nama Sushi SF',
     url: 'namasushisf.com',
     display: 'True',
-    yelpID: ''
+    yelpID: '',
+    ratingPic: '',
+    reviews: '',
+    review: '',
+    yelpURL: ''
   },
 ];
 
@@ -54,26 +74,27 @@ var viewModel = {
   reviews: ko.observable(''),
   review: ko.observable(''),
   yelpURL: ko.observable(''),
-  currentSelection: ko.observable(''),
+  currentSelection: ko.observableArray([]),
 
-
+  // set the current location to what has been selected
+  // take in a locations data array
   setLoc: function(data){
-    viewModel.setCurrent(data.name);
-    bounceSelected(data.name);
+    viewModel.setCurrent(data);
+    bounceSelected(data);
   },
 
-  setCurrent: function(locationName){
-    getID(locationName);
-    this.currentSelection(locationName);
+  setCurrent: function(data){
+    this.currentSelection(data);
   },
 
   initialValues: function() {
-    for(var loc in locationsModel){
+    // set the ko.observableArray to the values in the model
+    for (var loc in locationsModel) {
       this.locations.push(locationsModel[loc]);
-    }
+    };
     this.locCount();
-    getID(locationsModel[0].name);
-    this.currentSelection(locationsModel[0].name);
+    // pull down yelp data in the async
+    this.getIDs();
   },
 
   generateMarkers: function(){
@@ -86,20 +107,22 @@ var viewModel = {
 
   locCount: function(){
     var n = viewModel.locations().length;
+    // if there is just a single location we use setLoc() to select a marker
     if(n === 1) {
       this.locationCount(n.toString() + ' location');
-      getID(viewModel.locations()[0].name);
-      this.currentSelection(viewModel.locations()[0].name);
+      this.setLoc(viewModel.locations()[0]);
     } else {
       this.locationCount(n.toString() + ' locations');
     }
   },
 
+  // tosses all the location names to yelp and populates the locationModel
   getIDs: function(){
     for(var loc in locationsModel){
-      getID(locationsModel[loc].name);
+      getID(locationsModel[loc].name, loc);
     }
   },
+
 
   search: function(value) {
     // remove all of the list
